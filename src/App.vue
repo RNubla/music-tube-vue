@@ -5,7 +5,7 @@
       <MusicTable />
     </div>
     <div>
-      <Player />
+      <PlayerContainer />
     </div>
   </div>
   <!-- <HelloWorld /> -->
@@ -17,13 +17,13 @@ import Navbar from "./components/Navigation/Navbar.vue";
 // import HelloWorld from "./components/HelloWorld.vue";
 import MainLayout from "./components/MainLayout.vue";
 import MusicTable from "./components/Table/MusicTable.vue";
-import Player from "./components/MusicPlayer/Player.vue";
+import PlayerContainer from "./components/MusicPlayer/PlayerContainer.vue";
 export default {
   components: {
     Navbar,
     MainLayout,
     MusicTable,
-    Player,
+    PlayerContainer,
     // HelloWorld,
   },
 };
