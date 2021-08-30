@@ -98,13 +98,14 @@ export default {
       return !!pattern.test(str);
     }
     async function submit() {
-      if (validUrl(urlValidation.value.value)){
+      if (validUrl(urlValidation.value.value)) {
         // console.log('valid')
         await store.dispatch('getSong', urlValidation.value.value)
         urlValidation.value.value = ""
         store.dispatch('addSong')
+        store.dispatch('saveToJson')
         store.dispatch('clearSong')
-      }else{
+      } else {
         alert(`The following url is not valid: ${urlValidation.value.value}`)
         urlValidation.value.value = ""
         console.log('submit', urlValidation.value.value)
