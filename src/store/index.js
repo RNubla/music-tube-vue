@@ -6,11 +6,13 @@ export default createStore({
     currentSongIndex: 0,
     songs: {},
     songData: [],
+    currentAudioSource: "",
+    nextAudioSource: "",
   },
   mutations: {
     SET_SONGS_STATE(state, payload) {
       state.songs.title = payload[0];
-      state.songs.audioSourceUrl = payload[2];
+      // state.songs.audioSourceUrl = payload[2];
       state.songs.cover = payload[3];
       state.songs.dateAdded = new Date()
         .toJSON()
@@ -29,6 +31,9 @@ export default createStore({
     SET_CURRENT_SONG_INDEX(state) {
       state.currentSongIndex += 1;
     },
+    SET_CURRENT_AUDIO_SOURCE(state, payload) {
+      state.currentAudioSource = payload;
+    },
     // GET_SONG(state, song) {},
   },
   actions: {
@@ -44,7 +49,25 @@ export default createStore({
         const urlArr = url.split("\n");
         // console.log(urlArr);
         commit("SET_SONGS_YOUTUBE_URL", payload);
+        // commit("SET_CURRENT_AUDIO_SOURCE", urlArr[2]);
         commit("SET_SONGS_STATE", urlArr);
+      });
+    },
+    async fetchSongAudio({ commit }, payload) {
+      const command = Command.sidecar("youtube-dl", [
+        payload,
+        "-g",
+        "-e",
+        "--get-thumbnail",
+      ]);
+      await command.execute().then((event) => {
+        const url = event.stdout;
+        const urlArr = url.split("\n");
+        commit("SET_CURRENT_AUDIO_SOURCE", urlArr[2]);
+
+        // console.log(urlArr);
+        // commit("SET_SONGS_YOUTUBE_URL", payload);
+        // commit("SET_SONGS_STATE", urlArr);
       });
     },
     addSong({ commit }) {
@@ -64,19 +87,22 @@ export default createStore({
     loadJson({ state }) {
       // const jsonData =
       fs.readTextFile("test.json").then(async (data) => {
-        state.songData = await JSON.parse(data);
+        console.log("data", data);
+        if (data === undefined || data == "" || !data) {
+          console.log("No data is written on test.json");
+          state.songData = [];
+        } else {
+          state.songData = await JSON.parse(data);
+        }
       });
-      // console.log(
-      //   jsonData.then(async (data) => {
-      //     await console.log(data);
-      //     state.songData = JSON.parse(data);
-      //   })
-      // );
     },
   },
   getters: {
     getSongData: (state) => {
       return state.songData;
+    },
+    getCurrentAudioSource: (state) => {
+      return state.currentAudioSource;
     },
     // getSongAudioSource:(state) => {
     //   return state.
