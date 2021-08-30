@@ -12,6 +12,10 @@ export default createStore({
       state.songs.title = payload[0];
       state.songs.audioSourceUrl = payload[2];
       state.songs.cover = payload[3];
+      state.songs.dateAdded = new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, "/");
     },
     SET_SONGS_YOUTUBE_URL(state, payload) {
       state.songs.youtubeUrl = payload;
