@@ -65,7 +65,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="song in songs" :key="song">
+              <tr v-for="song in this.$store.state.songData" >
                 <TableData :songValues="song" />
               </tr>
             </tbody>
