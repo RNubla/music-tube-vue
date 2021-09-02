@@ -4,6 +4,7 @@
   >
     <p>Current Time {{ currentTime }}</p>
     <p>Duration {{ duration }}</p>
+    <p>Fetch Next Song {{ fetchNextSong }}</p>
     <Player
       :autoplay="true"
       :current-time="currentTime"
@@ -35,20 +36,56 @@ export default {
   data() {
     return {
       currentTime: 0,
-      duration: 0
+      duration: 0,
+      fetchNextSong: false
     }
   },
   methods: {
     onTimeUpdate(time) {
       this.currentTime = time
+      const endOfSong = Math.floor(this.duration) - 5
+      if (Math.floor(parseInt(this.currentTime.valueOf().toString())) == endOfSong) {
+        // console.log('Set the next song state to the next song on the list')
+        this.fetchNextSong = true
+        if (Math.floor(parseInt(this.currentTime.valueOf().toString())) == Math.floor(this.duration) - 2) {
+          this.fetchNextSong = false
+        }
+      }
     },
     getDuration(time) {
       this.duration = time
+    },
+
+    nextSong() {
+      const endOfSong = Math.floor(this.duration) - 5
+      if (Math.floor(parseInt(this.currentTime.valueOf().toString())) == endOfSong) {
+        console.log('Set the next song state to the next song on the list')
+      }
     }
   },
+  watch: {
+    fetchNextSong() {
+      if (this.fetchNextSong) {
+        this.$store.dispatch('incrementCurrentSongIndex')
+        this.$store.dispatch('fetchSongAudio', this.$store.state.songData[this.$store.state.currentSongIndex].youtubeUrl)
+        // console.log(this.fetchNextSong)
+      }
+    }
+  },
+  // watch: {
+  //   currentTime() {
+  //     const endConstraint = Math.floor(this.duration) - 5
+
+  //     if (Math.floor(parseInt(this.currentTime.valueOf().toString())) == endConstraint) {
+  //       // dispatch set next song 
+  //       console.log('Set the next song state to the next song on the list')
+  //     }
+  //   }
+  // },
   setup() {
     const store = useStore()
     let audioSource = ''
+    const currentSongIndex = store.getters.getCurrentSongIndex
 
     const checkSongData = () => {
       // const data = store.getters.getSongData
@@ -73,6 +110,7 @@ export default {
     // })
 
     return {
+      currentSongIndex,
       audioSource
     }
   }
