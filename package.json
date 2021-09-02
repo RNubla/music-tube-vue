@@ -11,10 +11,14 @@
     "@tauri-apps/api": "^1.0.0-beta.8",
     "@vime/core": "^5.0.33",
     "@vime/vue-next": "^5.0.33",
+    "axios": "^0.21.1",
     "element-plus": "^1.1.0-beta.3",
     "uuid": "^8.3.2",
     "vue": "^3.0.5",
-    "vuex": "^4.0.0-0"
+    "vue-axios": "^3.2.5",
+    "vue3-aplayer": "^1.7.3",
+    "vuex": "^4.0.0-0",
+    "youtube-dl-exec": "^1.2.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.0.0-beta.10",
@@ -22,6 +26,7 @@
     "@vue/compiler-sfc": "^3.0.5",
     "autoprefixer": "^10.3.3",
     "postcss": "^8.3.6",
+    "sass": "^1.38.2",
     "tailwindcss": "^2.2.8",
     "vite": "^2.4.4"
   }
