@@ -27,8 +27,9 @@
             <tbody>
               <tr
                 v-for="(song, index) in this.$store.state.songData"
+                :key="song.youtubeUrl"
                 @click.prevent="playSelectedSong(index)"
-                :class="{ 'bg-gray-500': (song.title === selectedSong) }"
+                :class="{ 'bg-gray-500': (song.title == selectedSong) }"
               >
                 <TableData :songValues="song" />
               </tr>
@@ -52,8 +53,9 @@ export default {
     let selectedSong = ''
     const playSelectedSong = async (index) => {
       selectedSong = store.state.songData[index].title
-      console.log(selectedSong)
+      // console.log(selectedSong)
       await store.dispatch('fetchSongAudio', store.state.songData[index].youtubeUrl)
+      store.dispatch('setCurrentSongIndex', index)
     }
 
     return {
