@@ -5,5 +5,7 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import "@vime/core/themes/default.css";
 import "./index.css";
+// import VueAxios from "vue-axios";
+import axios from "axios";
 
 createApp(App).use(store).use(ElementPlus).mount("#app");
