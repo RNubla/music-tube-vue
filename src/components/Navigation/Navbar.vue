@@ -77,8 +77,11 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { inject, onMounted, ref } from 'vue'
 import { useStore } from 'vuex';
+import axios from 'axios'
+
+// import youtubeFetch from '../../middleware/youtubeFetch'
 export default {
   data() {
     return {
@@ -98,19 +101,23 @@ export default {
       return !!pattern.test(str);
     }
     async function submit() {
-      if (validUrl(urlValidation.value.value)) {
-        // console.log('valid')
-        await store.dispatch('getSong', urlValidation.value.value)
-        urlValidation.value.value = ""
-        store.dispatch('addSong')
-        store.dispatch('saveToJson')
-        store.dispatch('clearSong')
-      } else {
-        alert(`The following url is not valid: ${urlValidation.value.value}`)
-        urlValidation.value.value = ""
-        console.log('submit', urlValidation.value.value)
-      }
+      axios.post('http://127.0.0.1:8000/id', { v: 'adLGHcj_fmA' }).then((res) => { console.log(res.data._ydl_info) })
     }
+
+    // async function submit() {
+    //   if (validUrl(urlValidation.value.value)) {
+    //     // console.log('valid')
+    //     await store.dispatch('getSong', urlValidation.value.value)
+    //     urlValidation.value.value = ""
+    //     store.dispatch('addSong')
+    //     store.dispatch('saveToJson')
+    //     store.dispatch('clearSong')
+    //   } else {
+    //     alert(`The following url is not valid: ${urlValidation.value.value}`)
+    //     urlValidation.value.value = ""
+    //     console.log('submit', urlValidation.value.value)
+    //   }
+    // }
 
 
     return {
