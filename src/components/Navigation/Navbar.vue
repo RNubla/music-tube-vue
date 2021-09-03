@@ -93,6 +93,7 @@ export default {
     let artist = ''
     let pic = ''
     let title = ''
+    // let id = ''
 
 
 
@@ -137,9 +138,12 @@ export default {
             // console.log(data["title"])
             title = data["title"]
             pic = data["thumbnail"]
-            const m4a = data["formats"].filter((e) => e.ext == "m4a")
-            // console.log(m4a[0].url)
+            // id = data["id"]
+            const m4a = data["formats"].filter((e) => e.ext == "m4a" && e.format_id == "140")
+            console.log(m4a)
+            console.log(m4a[0].url)
             const song = {
+              "id": id,
               "title": title,
               "artist": artist,
               "pic": pic,
@@ -149,6 +153,7 @@ export default {
             // console.log(url)
             store.commit('SET_CURRENT_SONG_STATE', song)
             store.commit('ADD_TO_PLAYLIST', song)
+            store.dispatch('saveToJson')
           });
       }
       else {
@@ -157,14 +162,17 @@ export default {
           artist = data['artist']
           title = data["title"]
           pic = data["thumbnail"]
+          // id = data[]
           const m4a = data["formats"].filter((e) => e.ext == "m4a")
           const song = {
+            "id": id,
             "title": title,
             "artist": artist,
             "pic": pic,
             "src": m4a[0].url
           }
           store.commit('ADD_TO_PLAYLIST', song)
+          store.dispatch('saveToJson')
         })
       }
     }
