@@ -1,1 +1,26 @@
-[{"youtubeUrl":"https://www.youtube.com/watch?v=adLGHcj_fmA","title":"Bruno Mars, Anderson .Paak, Silk Sonic - Leave the Door Open [Official Video]","cover":"https://i.ytimg.com/vi_webp/adLGHcj_fmA/maxresdefault.webp","dateAdded":"2021/08/30"},{"youtubeUrl":"https://www.youtube.com/watch?v=SDQwGwU-8O8","title":"I Feel Gold","cover":"https://i.ytimg.com/vi_webp/SDQwGwU-8O8/maxresdefault.webp","dateAdded":"2021/08/30"},{"youtubeUrl":"https://www.youtube.com/watch?v=McqGBfbSEpM","title":"Fuck Your Sunshine","cover":"https://i.ytimg.com/vi_webp/McqGBfbSEpM/maxresdefault.webp","dateAdded":"2021/08/30"},{"youtubeUrl":"https://www.youtube.com/watch?v=LiFlpfxRUUY","title":"Revolving Door (feat. Amethyst)","cover":"https://i.ytimg.com/vi_webp/LiFlpfxRUUY/maxresdefault.webp","dateAdded":"2021/08/30"}]
+[
+  {
+    "youtubeUrl": "https://www.youtube.com/watch?v=adLGHcj_fmA",
+    "title": "Bruno Mars, Anderson .Paak, Silk Sonic - Leave the Door Open [Official Video]",
+    "cover": "https://i.ytimg.com/vi_webp/adLGHcj_fmA/maxresdefault.webp",
+    "dateAdded": "2021/08/30"
+  },
+  {
+    "youtubeUrl": "https://www.youtube.com/watch?v=SDQwGwU-8O8",
+    "title": "I Feel Gold",
+    "cover": "https://i.ytimg.com/vi_webp/SDQwGwU-8O8/maxresdefault.webp",
+    "dateAdded": "2021/08/30"
+  },
+  {
+    "youtubeUrl": "https://www.youtube.com/watch?v=McqGBfbSEpM",
+    "title": "Fuck Your Sunshine",
+    "cover": "https://i.ytimg.com/vi_webp/McqGBfbSEpM/maxresdefault.webp",
+    "dateAdded": "2021/08/30"
+  },
+  {
+    "youtubeUrl": "https://www.youtube.com/watch?v=LiFlpfxRUUY",
+    "title": "Revolving Door (feat. Amethyst)",
+    "cover": "https://i.ytimg.com/vi_webp/LiFlpfxRUUY/maxresdefault.webp",
+    "dateAdded": "2021/08/30"
+  }
+]
