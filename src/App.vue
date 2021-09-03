@@ -5,7 +5,16 @@
       <!-- <MusicPlayer /> -->
       <Navbar />
       <!-- <MusicTable /> -->
-      <Aplayer :list="playlist" autoplay controls :music="{}" />
+      <!-- <Aplayer :list="playlist" autoplay controls :music="this.$store.state.currentSong"  /> -->
+      <Aplayer
+        :list="playlist"
+        controls
+        shuffle
+        ref="player"
+        @play="play"
+        :music="this.$store.state.playlist.length === 0 ? {} : this.$store.state.playlist[0]"
+        @ended="setEnded"
+      />
     </div>
     <div>
       <!-- <PlayerContainer /> -->
@@ -35,37 +44,100 @@ export default {
     Aplayer
     // HelloWorld,
   },
-  setup() {
-    const store = useStore()
-    onMounted(async () => {
-      await store.dispatch('loadJson')
-    })
-    onUpdated(() => {
-
-      loadSongDataState()
-    })
-    let song = { title: '', pic: '', url: '' };
-    let playlist = []
-    const loadSongDataState = () => {
-      let songData = store.getters.getSongData;
-      // console.log(songData)
-      songData.forEach(element => {
-        // console.log(element)
-        // console.log(store.dispatch('fetchSongAudio', element.youtubeUrl))
-        song.title = element.title
-        song.pic = element.pic
-        song.url = ''
-        playlist.push(song)
-      });
-      console.log(playlist)
-    }
-
+  data() {
     return {
-      playlist
-      // loadSongDataState
+      playlist: [
+        {
+          title: '',
+          pic: '',
+          src: '',
+          artist: ''
+        }
+      ]
     }
+  },
+  watch: {
+    ifEnded() {
+      console.log('ended')
+      console.log(this.$store.state.currentSong)
+    }
+  },
+  computed: {
+    shuffledList() {
+      return this.playlist
+    }
+  },
+  methods: {
+    play(event) {
+      // console.log('event', event)
+      this.$refs.player.shuffledList = this.playlist
+    }
+  },
+  mounted() {
+    if (this.$store.state.playlist.length === 0) {
 
-  }
+      this.playlist = undefined
+    }
+    else {
+      this.playlist = this.$store.state.playlist
+    }
+  },
+  updated() {
+    this.$nextTick(function () {
+      this.playlist = this.$store.state.playlist
+    })
+  },
+  // setup() {
+  //   const store = useStore()
+  //   onMounted(async () => {
+  //     // await store.dispatch('loadJson')
+  //     if (store.state.playlist === 0) {
+  //       playlist = undefined
+  //     }
+  //     else {
+  //       playlist = store.state.playlist
+  //     }
+  //   })
+  //   onUpdated(() => {
+
+  //     // loadSongDataState()
+  //   })
+  //   let song = { title: store.state.currentSong.title, pic: store.state.currentSong.pic, src: store.state.currentSong.src, artist: store.state.currentSong.artist };
+  //   let playlist = [
+  //     {
+  //       title: '',
+  //       artist: '',
+  //       src: '',
+  //       pic: ''
+  //     }
+  //   ]
+  // const loadSongDataState = () => {
+  //   let songData = store.getters.getSongData;
+  //   // console.log(songData)
+  //   songData.forEach(element => {
+  //     // console.log(element)
+  //     // console.log(store.dispatch('fetchSongAudio', element.youtubeUrl))
+  //     song.title = element.title
+  //     song.pic = element.pic
+  //     song.url = ''
+  //     playlist.push(song)
+  //   });
+  //   console.log(playlist)
+  // }
+  // const setEnded = () => {
+  //   console.log('song has ended')
+  //   store.commit('SET_SONG_ENDED', true)
+  // }
+
+  // return {
+  //   setEnded,
+  //   song,
+  //   // currentSong = Object.keys(store.state.currentSong === 0) ? store.state.currentSong : {},
+  //   playlist
+  //   // loadSongDataState
+  // }
+
+  // }
 };
 
 // This starter template is using Vue 3 experimental <script setup> SFCs
