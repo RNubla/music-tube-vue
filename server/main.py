@@ -33,8 +33,8 @@ def read_root():
 def video_info(video_id: YouTubeUrl):
     url_id = str(video_id).replace("'", "")
     video = pafy.new(f'https://www.youtube.com/watch?{url_id}')
-    audioStream = video.audiostreams
-    return audioStream
+    # audioStream = video.audiostreams
+    return video
 
 
 @ app.get("/items/{item_id}")
