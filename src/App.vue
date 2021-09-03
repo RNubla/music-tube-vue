@@ -14,12 +14,14 @@
         @play="play"
         :music="this.$store.state.playlist.length === 0 ? {} : this.$store.state.playlist[0]"
         @ended="setEnded"
+        @playIndex="getPlayIndex"
       />
     </div>
     <div>
       <!-- <PlayerContainer /> -->
     </div>
   </div>
+  <!-- <p>{{ this.$store.state.playlist }}</p> -->
   <!-- <HelloWorld /> -->
   <!-- <MainLayout /> -->
 </template>
@@ -60,6 +62,9 @@ export default {
     ifEnded() {
       console.log('ended')
       console.log(this.$store.state.currentSong)
+    },
+    getPlayIndex() {
+      console.log('playIndex')
     }
   },
   computed: {
@@ -69,11 +74,18 @@ export default {
   },
   methods: {
     play(event) {
-      // console.log('event', event)
+      console.log('event', event)
       this.$refs.player.shuffledList = this.playlist
+      console.log('platbtn', this.$refs.player.shuffledList)
+    },
+    setEnded(event) {
+      // console.log('The song ended', event)
+      // this.$store.commit('INCREMENT_PLAYLIST_INDEX');
+      // this.$store.dispatch('fetchAudioSrc', this.$store.state.playlist[this.$store.state.playlistIndex].id)
     }
   },
   mounted() {
+    this.$store.dispatch('loadJson')
     if (this.$store.state.playlist.length === 0) {
 
       this.playlist = undefined
