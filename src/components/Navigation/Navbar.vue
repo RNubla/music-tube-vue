@@ -74,12 +74,13 @@
       </div>
     </header>
   </div>
+  <!-- <p>{{ this.$store.state.currentSong }}</p> -->
 </template>
 
 <script>
-import { inject, onMounted, ref } from 'vue'
-import { useStore } from 'vuex';
-import axios from 'axios'
+import { inject, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import axios from "axios";
 
 // import youtubeFetch from '../../middleware/youtubeFetch'
 export default {
@@ -89,19 +90,83 @@ export default {
     };
   },
   setup(props) {
-    const urlValidation = ref(null)
-    const store = useStore()
-    const validUrl = (str) => {
-      const pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
-      return !!pattern.test(str);
+    let artist = ''
+    let pic = ''
+    let title = ''
+
+
+
+    const urlValidation = ref(null);
+    const store = useStore();
+    const getUrlId = (url) => {
+      const regExp = /^https?\:\/\/(?:www\.youtube(?:\-nocookie)?\.com\/|m\.youtube\.com\/|youtube\.com\/)?(?:ytscreeningroom\?vi?=|youtu\.be\/|vi?\/|user\/.+\/u\/\w{1,2}\/|embed\/|watch\?(?:.*\&)?vi?=|\&vi?=|\?(?:.*\&)?vi?=)([^#\&\?\n\/<>"']*)/i;
+      const match = url.match(regExp);
+      return (match && match[1].length == 11) ? match[1] : false;
     }
+    const validUrl = (str) => {
+      const pattern = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+        "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // fragment locator
+      return !!pattern.test(str);
+    };
     async function submit() {
-      axios.post('http://127.0.0.1:8000/id', { v: 'adLGHcj_fmA' }).then((res) => { console.log(res.data._ydl_info) })
+      // https://www.youtube.com/watch?v=lgOKr-IajNA
+      const id = getUrlId(urlValidation.value.value)
+      urlValidation.value.value = ""
+      if (Object.keys(store.state.currentSong).length === 0) {
+        // console.log(id)
+        axios
+          .post("http://127.0.0.1:8000/id", { v: id })
+          .then((res) => {
+            const data = res.data._ydl_info
+            console.log(data)
+            // console.log(data["artist"])
+            if (data['artist'] === undefined) {
+
+              artist = data["channel"]
+            } else {
+
+              artist = data["artist"]
+            }
+            // console.log(data["title"])
+            title = data["title"]
+            pic = data["thumbnail"]
+            const m4a = data["formats"].filter((e) => e.ext == "m4a")
+            // console.log(m4a[0].url)
+            const song = {
+              "title": title,
+              "artist": artist,
+              "pic": pic,
+              "src": m4a[0].url
+            }
+            // const url = m4a[0].url
+            // console.log(url)
+            store.commit('SET_CURRENT_SONG_STATE', song)
+            store.commit('ADD_TO_PLAYLIST', song)
+          });
+      }
+      else {
+        axios.post('http://127.0.0.1:8000/id', { v: id }).then((res) => {
+          const data = res.data._ydl_info
+          artist = data['artist']
+          title = data["title"]
+          pic = data["thumbnail"]
+          const m4a = data["formats"].filter((e) => e.ext == "m4a")
+          const song = {
+            "title": title,
+            "artist": artist,
+            "pic": pic,
+            "src": m4a[0].url
+          }
+          store.commit('ADD_TO_PLAYLIST', song)
+        })
+      }
     }
 
     // async function submit() {
@@ -119,12 +184,11 @@ export default {
     //   }
     // }
 
-
     return {
       urlValidation,
-      submit
-    }
-  }
+      submit,
+    };
+  },
   // methods:{
   //   submit(formValidation){
   //     console.log('submit working', this.$refs[formValidation])
